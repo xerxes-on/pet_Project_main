@@ -4,5 +4,5 @@
           <span>{{ session('message')}}</span>
       </div>
     @endif
-    @yield( 'content' )
+    @yield('content')
 <x-footer></x-footer>

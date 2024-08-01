@@ -4,7 +4,7 @@
         <div class="edit-profile-container">
             <h1>Edit Profile</h1>
             <form class="edit-profile-form" method="Post" action="{{ route('edit_profile') }}" enctype="multipart/form-data">
-                @method("PUT")
+                @method("PATCH")
                 @csrf
                 <div class="profile-photo-section">
                     <img src="./assets/images/user_pics/{{ auth()->user()->profile_picture }}" alt="Profile Photo" class="profile-photo">

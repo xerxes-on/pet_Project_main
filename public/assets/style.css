@@ -146,7 +146,47 @@ h1,p {
 }
 /* Add this to your existing styles.css file */
 
+/*dropdown*/
 
+
+nav a {
+	display:block;
+	padding:0 10px;
+	line-height: 60px;
+	text-decoration:none;
+}
+/* Hide Dropdowns by Default */
+nav ul ul {
+	display: none;
+	position: absolute;
+	top: 50px; /* the height of the main nav */
+    background-color: #EFEAD3;
+    border-radius: 20px;
+    z-index: 5;
+}
+
+/* Display Dropdowns on Hover */
+header nav ul li:hover > ul {
+	display:inherit;
+}
+
+/* Fisrt Tier Dropdown */
+nav ul ul li {
+	width:170px;
+	float:none;
+	display:list-item;
+	position: relative;
+}
+
+/* Second, Third and more Tiers	*/
+nav ul ul ul li {
+	position: relative;
+	top:-60px;
+	left:170px;
+}
+
+
+/*dropdown ends*/
 
 
 
@@ -155,7 +195,7 @@ nav ul {
     list-style-type: none;
 }
 
-nav ul li {
+header nav ul li {
     margin-right: 80px;
     font-weight: 100;
 }
@@ -763,3 +803,14 @@ li {
     text-align: center;
     color: #666;
 }
+.pagination ul li {
+    margin-right: 5px;
+    font-size: larger;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+
+
