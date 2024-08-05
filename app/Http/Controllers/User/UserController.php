@@ -10,27 +10,37 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function profile(): View
+    public function profile()
     {
-        $user_info = auth()->user();
+        $user_info = Auth::user()->with('books');
+        return response()->json([
+            'user'=>$user_info,
+        ]);
 
-        return view('layouts.profile', compact(['user_info']));
     }
 
-    public function edit(): View
+    public function my_books()
     {
-        return view('layouts.edit_profile');
+        return response()->json([
+            'my_books'=>Auth::user()->books
+        ]);
+    }
+        public function my_liked_quotes()
+    {
+        return response()->json([
+            'my_quotes'=>Auth::user()->quotes
+        ]);
     }
         public function store(Request $request)
     {
-        $user = Auth::user();
+//        return "hi";
+        $user = auth()->user();
 
         $request->validate([
             'username' => ['string','nullable', 'lowercase',  'max:255', 'unique:'. User::class],
             'profile_picture' =>['nullable', 'image', 'mimes:jpg,png,webp', 'max:2048'],
         ]);
         $updating_data = (array) $request->all();
-
         if( $request->hasFile('profile_picture')){
 
     //        img handling + naming
@@ -48,7 +58,10 @@ class UserController extends Controller
             }
         }
         $user->update($updating_data);
-        return redirect()->route('profile')->with('message',"Successfully changed 🤗");
+        return response()->json([
+            'message'=>"Successfully changed 🤗",
+            'updated_data'=>$updating_data
+        ]);
 
     }
 
