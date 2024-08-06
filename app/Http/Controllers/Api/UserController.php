@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -33,7 +32,6 @@ class UserController extends Controller
     }
         public function store(Request $request)
     {
-//        return "hi";
         $user = auth()->user();
 
         $request->validate([

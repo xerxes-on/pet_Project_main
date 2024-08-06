@@ -1,39 +1,42 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\User\ReviewController;
-use App\Http\Controllers\User\UserController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AuthorController;
+use App\Http\Controllers\Api\BookController;
+use App\Http\Controllers\Api\PageController;
+use App\Http\Controllers\Api\QuoteController;
+use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
-use function Pest\Laravel\json;
 
-Route::post('login', [AuthController::class, 'login']);
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+Route::resources([
+    'books'=>BookController::class,
+    'quotes'=>QuoteController::class,
+    'authors'=>AuthorController::class,
+    'reviews'=>ReviewController::class,
+]);
+Route::post('search', [PageController::class, 'search']);
 
+Route::middleware('auth:api')->group(function (){
+        Route::post('/quotes', [QuoteController::class, 'store']);
+        Route::post('/quotes/{quote}', [QuoteController::class, 'update']);
+        Route::delete('/quotes/{quote}', [QuoteController::class, 'destroy']);
 
-Route::get('login', function (){
-       return response()->json(['message'=> "Login please"]);
-   })->name('login');
+        Route::post('/reviews', [ReviewController::class, 'store']);
+        Route::post('/reviews/{review}', [ReviewController::class, 'update']);
+        Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
 
-Route::post('register', [AuthController::class, 'register']);
-
-Route::get('books', [PageController::class, 'catalog']);
-Route::post('books/search', [PageController::class, 'search']);
-
-Route::get('quotes', [PageController::class, 'quotes']);
-Route::get('quotes/search', [PageController::class, 'quote_search']);
-
-Route::get('authors', [PageController::class, 'authors']);
-Route::post('authors/search', [PageController::class, 'author_search']);
-
-
-Route::middleware('auth:sanctum')->group(function (){
-        Route::post('logout', [AuthController::class, 'logout']);
-        Route::get('profile', [UserController::class, 'profile']);
-        Route::put('profile_edit', [UserController::class, 'store']);
         Route::get('mybooks', [UserController::class, 'my_books']);
         Route::get('my_quotes', [UserController::class, 'my_liked_quotes']);
-        Route::apiResource('reviews', ReviewController::class);
-
 });
 
+require (__DIR__.'/auth.php');

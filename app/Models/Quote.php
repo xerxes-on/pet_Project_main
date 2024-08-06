@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Quote extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'quote', 'author_id'
+    ];
     public function author()
     {
         return $this->belongsTo(Author::class);
