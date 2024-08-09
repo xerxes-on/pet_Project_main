@@ -33,7 +33,7 @@ class AuthorController
             if ($author) {
             return response(new AuthorsResource($author));
         } else {
-            return response('There is no hotel with such id', 404);
+            return response('There is no hotel with such id');
         }
     }
 

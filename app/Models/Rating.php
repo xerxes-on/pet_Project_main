@@ -8,9 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Rating extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'rating', 'user_id', 'comment'
-    ];
+       protected $guarded = [];
+
     public function book()
     {
         return $this->belongsTo(Book::class);

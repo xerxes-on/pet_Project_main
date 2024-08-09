@@ -25,11 +25,11 @@ class QuoteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'quote'=> 'required|min:10|unique:'. Quote::class,
-            'author_id'=>'required',
+            'quote' => 'required|min:10|unique:'.Quote::class,
+            'author_id' => 'required',
         ]);
         $result = Quote::create($request->all());
-        return response($result, 401);
+        return response($result);
     }
 
     /**
@@ -41,7 +41,7 @@ class QuoteController extends Controller
         if ($quote) {
             return response(new QuotesResource($quote));
         } else {
-            return ('There is no hotel with such id');
+            return response('There is no hotel with such id');
         }
     }
 
@@ -52,11 +52,11 @@ class QuoteController extends Controller
     {
         $quote = Quote::find($id);
         $request->validate([
-            'quote'=> 'required|min:10|unique:'. Quote::class,
-            'author_id'=>'required',
+            'quote' => 'required|min:10|unique:'.Quote::class,
+            'author_id' => 'required',
         ]);
         $quote->update($request->all());
-        return response($quote, 200);
+        return response($quote);
     }
 
     /**
@@ -65,12 +65,12 @@ class QuoteController extends Controller
     public function destroy(string $id)
     {
         $quote = Quote::find($id);
-        if($quote){
-             $quote->delete();
-            return response('deleted', 200);
+        if ($quote) {
+            $quote->delete();
+            return response('deleted');
 
-        }else{
-            return response('No such kind of quote', 404);
+        } else {
+            return response('No such kind of quote');
         }
 
     }

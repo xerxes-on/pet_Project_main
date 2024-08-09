@@ -10,9 +10,8 @@ class BookController
 {
     public function index()
     {
-         $books = Book::with('author')->paginate(10);
-         $count = Book::count();
-         return response(BooksResource::collection($books), $count);
+        $books = Book::with('author')->paginate(10);
+        return response(BooksResource::collection($books));
     }
 
     public function store(Request $request)
@@ -22,9 +21,10 @@ class BookController
 
     public function show(string $id)
     {
-         $book = Book::find($id)->with('author');
-         return response(BooksResource::collection($book));
+        $book = Book::find($id)->with('author');
+        return response(BooksResource::collection($book));
     }
+
     public function update(Request $request, string $id)
     {
         //

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Author extends Model
 {
     use HasFactory;
+    protected $guarded = [];
     public function quotes():HasMany
     {
         return $this->hasMany(Quote::class);
@@ -17,7 +18,6 @@ class Author extends Model
     {
         return $this->hasMany(Book::class);
     }
-    protected $table = 'authors';
 
 
 }
