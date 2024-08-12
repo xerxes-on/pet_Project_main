@@ -67,7 +67,6 @@ class BookResource extends Resource
                     ->wrap()
                     ->limitedRemainingText()
                     ->checkFileExistence(false),
-
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('author.name'),
@@ -83,6 +82,7 @@ class BookResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
 
             ])
             ->bulkActions([

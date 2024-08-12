@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Author;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Rating;
@@ -9,6 +10,7 @@ use App\Models\User;
 use DateTime;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Random\RandomException;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,18 +21,20 @@ class DatabaseSeeder extends Seeder
     $randomDate->setTimestamp($randomTimestamp);
     return $randomDate;
 }
+
+    /**
+     * @throws RandomException
+     */
     public function run(): void
     {
-        Rating::factory()->count(50)->create();
-
+//        Book::factory()->count(50)->create();
 
 //        for ($i = 1; $i <= 100; $i++) {
 //            $pivotData = [
-//                'id' => $i,
-//                'created_at' => $this->randomDateInRange(new DateTime('2017-01-01'), now())
+//                'images' => 'default_images/profile_' . random_int(7,14) . ".png"
 //            ];
 //            $book = Book::find($i);
-//           $book->update($pivotData[$i-1]);
+//           $book->update($pivotData);
 //        }
 
     }

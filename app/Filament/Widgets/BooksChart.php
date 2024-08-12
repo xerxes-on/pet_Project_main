@@ -29,7 +29,8 @@ class BooksChart extends ChartWidget
                     'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                     'backgroundColor' => '#36A2EB',
                     'borderColor' => '#9BD0F5',
-                    'fill' =>true
+                    'fill' =>true,
+                    'borderJoinStyle' => 'miter'
                 ],
             ],
             'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
