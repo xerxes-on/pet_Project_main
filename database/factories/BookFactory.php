@@ -14,6 +14,9 @@ class BookFactory extends Factory
             'number_of_pages'=>$this->faker->numberBetween(60,500),
             'published_date'=>$this->faker->date(),
             'rating'=>$this->faker->randomFloat(2, 0, 10),
+            'created_at'=>$this->faker->dateTimeBetween('-1 year', now()),
+            'images' => 'default-image.png'
+
         ];
     }
 }

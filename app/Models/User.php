@@ -3,25 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Althinect\FilamentSpatieRolesPermissions\Concerns\HasSuperAdmin;
+use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements  JWTSubject
 {
-    use HasFactory, Notifiable, HasApiTokens;
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'gender',
-        'profile_picture',
-        'username',
-        'date_of_birth',
-        'pic_changed'
-    ];
+    use HasFactory, Notifiable, HasApiTokens, HasRoles, HasSuperAdmin, HasPanelShield;
+    protected $guarded = [];
 
     protected $hidden = [
         'password',
@@ -42,6 +36,10 @@ class User extends Authenticatable implements  JWTSubject
     public function reviews()
     {
         return $this->hasMany(Rating::class);
+    }
+    public function likedquotes()
+    {
+        return $this->belongsToMany(Quote::class, 'quote_user');
     }
 
 
