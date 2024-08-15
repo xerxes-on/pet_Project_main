@@ -18,4 +18,12 @@ class Quote extends Model
     {
         return $this->belongsToMany(User::class);
     }
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_quote');
+    }
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'quote_user');
+    }
 }

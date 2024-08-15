@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AuthorResource\Pages;
-use App\Filament\Resources\AuthorResource\RelationManagers;
 use App\Models\Author;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AuthorResource extends Resource
 {
@@ -21,7 +18,6 @@ class AuthorResource extends Resource
 
     public static function form(Form $form): Form
     {
-
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
@@ -44,6 +40,7 @@ class AuthorResource extends Resource
             ]);
     }
 
+
     public static function table(Table $table): Table
     {
         return $table
@@ -55,17 +52,13 @@ class AuthorResource extends Resource
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('date_of_birth'),
                 Tables\Columns\TextColumn::make('books_count')
-                    ->label('Number of Books')
-                    ->getStateUsing(function ($record) {
-                        return $record->books()->count();
-                    })
-
-
+                    ->counts('books')
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -78,7 +71,7 @@ class AuthorResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+//            RelationManagers\CategoriesRelationManager::class,
         ];
     }
 
@@ -87,6 +80,7 @@ class AuthorResource extends Resource
         return [
             'index' => Pages\ListAuthors::route('/'),
             'create' => Pages\CreateAuthor::route('/create'),
+            'view' => Pages\ViewAuthor::route('/{record}'),
             'edit' => Pages\EditAuthor::route('/{record}/edit'),
         ];
     }

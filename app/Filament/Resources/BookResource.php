@@ -67,21 +67,23 @@ class BookResource extends Resource
                     ->wrap()
                     ->limitedRemainingText()
                     ->checkFileExistence(false),
-
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('author.name'),
                 Tables\Columns\TextColumn::make('published_date')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('rating')
-                    ->sortable(),
-
+            Tables\Columns\TextColumn::make('ratings_count')
+                    ->label('Number of reviews')
+                    ->counts('ratings')
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -102,7 +104,9 @@ class BookResource extends Resource
         return [
             'index' => Pages\ListBooks::route('/'),
             'create' => Pages\CreateBook::route('/create'),
+            'view' => Pages\ViewBook::route('/{record}'),
             'edit' => Pages\EditBook::route('/{record}/edit'),
         ];
     }
+
 }

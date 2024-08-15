@@ -12,6 +12,10 @@ class Category extends Model
 
     public function books()
     {
-        return $this->belongsToMany(Book::class);
+        return $this->belongsToMany(Book::class, 'category_book');
+    }
+    public function quotes()
+    {
+        return $this->belongsToMany(Quote::class, 'category_quote');
     }
 }
