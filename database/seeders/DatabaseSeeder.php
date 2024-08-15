@@ -6,24 +6,32 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Models\Rating;
 use App\Models\User;
+use DateTime;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
+    public function randomDateInRange(DateTime $start, DateTime $end): DateTime
+    {
+    $randomTimestamp = mt_rand($start->getTimestamp(), $end->getTimestamp());
+    $randomDate = new DateTime();
+    $randomDate->setTimestamp($randomTimestamp);
+    return $randomDate;
+}
     public function run(): void
     {
-//        Book::factory()->count(100)->create();
+        Rating::factory()->count(50)->create();
 
 
-
-//        $pivotData = [];
-//        for ($i = 1; $i <= 50; $i++) {
-//            $pivotData[] = [
-//                'user_id' => rand(1, 50),
-//                'quote_id' => rand(1, 200),
+//        for ($i = 1; $i <= 100; $i++) {
+//            $pivotData = [
+//                'id' => $i,
+//                'created_at' => $this->randomDateInRange(new DateTime('2017-01-01'), now())
 //            ];
+//            $book = Book::find($i);
+//           $book->update($pivotData[$i-1]);
 //        }
-//         DB::table('user_quotes')->insert($pivotData);
+
     }
 }
