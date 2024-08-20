@@ -5,8 +5,6 @@ namespace App\Filament\Resources\BookResource\Widgets;
 use App\Models\Book;
 use App\Models\Rating;
 use Filament\Widgets\ChartWidget;
-use Flowframe\Trend\Trend;
-use Illuminate\Support\Facades\Route;
 
 class RatingsOverview extends ChartWidget
 {

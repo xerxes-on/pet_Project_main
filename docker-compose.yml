@@ -1,43 +1,66 @@
 services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: laravel_app
+        restart: unless-stopped
+        working_dir: /var/www/html
+        volumes:
+            - .:/var/www/html
+        networks:
+            - laravel
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: bookrating:1.5
-    container_name: app
-    restart: unless-stopped
-    ports:
-      - "89:80"
-    environment:
-      - APP_ENV=local
-      - APP_DEBUG=true
-    volumes:
-      - ./:/var/www/html
-    networks:
-      - app-network
-    depends_on:
-      - db
+    webserver:
+        image: nginx:latest
+        container_name: laravel_webserver
+        restart: unless-stopped
+        ports:
+            - "8000:80"
+        volumes:
+            - .:/var/www/html
+            - ./docker/nginx:/etc/nginx/conf.d
+        networks:
+            - laravel
 
-  db:
-    image: postgres:13
-    container_name: db
-    restart: unless-stopped
-    ports:
-      - "5431:5432"
-    environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    networks:
-      - app-network
+    db:
+        image: postgres:15
+        container_name: db
+        restart: unless-stopped
+        ports:
+            - "5444:5432"
+        environment:
+            POSTGRES_DB: laravel
+            POSTGRES_USER: laravel_user
+            POSTGRES_PASSWORD: laravel_password
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - laravel
+
+
+    redis:
+        image: redis:alpine
+        container_name: redis
+        restart: unless-stopped
+        ports:
+            - "6379:6379"
+        networks:
+            - laravel
+
+
+    mailhog:
+        image: axllent/mailpit:latest
+        container_name: mailhog
+        restart: unless-stopped
+        ports:
+            - "1025:1025"  # SMTP server
+            - "8025:8025"  # Web UI
+        networks:
+            - laravel
 
 networks:
-  app-network:
-    driver: bridge
+    laravel:
 
 volumes:
-  pgdata:
-    driver: local
+    postgres_data:

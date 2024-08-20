@@ -12,7 +12,7 @@ class Category extends Model
 
     public function books()
     {
-        return $this->belongsToMany(Book::class, 'category_book');
+        return $this->belongsToMany(Book::class, 'books_categories');
     }
     public function quotes()
     {
