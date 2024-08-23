@@ -2,10 +2,10 @@
 
 return [
 
-   'defaults' => [
-    'guard' => 'api',
-    'passwords' => 'users',
-],
+//   'defaults' => [
+//    'guard' => 'web',
+//    'passwords' => 'users',
+//],
 
 
 'guards' => [
@@ -26,10 +26,10 @@ return [
     |
     */
 
-//    'defaults' => [
-//        'guard' => env('AUTH_GUARD', 'web'),
-//        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
-//    ],
+    'defaults' => [
+        'guard' => env('AUTH_GUARD', 'web'),
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+    ],
 
     /*
     |--------------------------------------------------------------------------

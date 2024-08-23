@@ -14,7 +14,6 @@ use Filament\Tables\Table;
 class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -75,6 +74,7 @@ class BookResource extends Resource
             Tables\Columns\TextColumn::make('ratings_count')
                     ->label('Number of reviews')
                     ->counts('ratings')
+                    ->sortable(),
             ])
             ->filters([
                 //

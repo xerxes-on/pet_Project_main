@@ -15,8 +15,8 @@ class RatingFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' =>  $this->faker->numberBetween(62, 100),
-            'book_id' => $this->faker->numberBetween(1,200),
+            'user_id' => User::inRandomOrder()->first()->id,
+            'book_id' => Book::inRandomOrder()->first()->id,
             'rating' =>  $this->faker->numberBetween(1,10),
             'comment' =>  $this->faker->realText(),
             'created_at' => $this->faker->dateTimeBetween('-1 month',now())

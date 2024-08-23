@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('author_id')->constrained()->cascadeOnDelete();
             $table->bigInteger('number_of_pages');
             $table->date('published_date');
+            $table->string('images');
             $table->float('rating')->default(0);
             $table->timestamps();
         });
