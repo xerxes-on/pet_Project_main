@@ -34,7 +34,7 @@ class UsersOverview extends BaseWidget
                 ->chart($data)
                 ->descriptionIcon('heroicon-m-arrow-trending-up'),
             Stat::make('Users', User::all()->count())
-                ->description('+' .User::where('created_at', '>=', $thirtyDaysAgo)->count(). 'increase')
+                ->description('+'.User::where('created_at', '>=', $thirtyDaysAgo)->count().'increase')
                 ->color('info')
                 ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->descriptionIcon('heroicon-m-arrow-trending-down'),

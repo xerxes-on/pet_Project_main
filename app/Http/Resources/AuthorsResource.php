@@ -23,7 +23,7 @@ class AuthorsResource extends JsonResource
             'author_picture' => $this->author_picture,
             'written_books' => BooksResource::collection($this->books),
             'quotes' => QuotesResource::collection($this->quotes),
-            ];
+        ];
 
     }
 }

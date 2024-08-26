@@ -1,3 +1,5 @@
+@php use Filament\Support\Facades\FilamentIcon; @endphp
+@php use Illuminate\Contracts\Support\Htmlable; @endphp
 @props([
     'alias' => null,
     'class' => '',
@@ -5,10 +7,10 @@
 ])
 
 @php
-    $icon = ($alias ? \Filament\Support\Facades\FilamentIcon::resolve($alias) : null) ?: ($icon ?? $slot);
+    $icon = ($alias ? FilamentIcon::resolve($alias) : null) ?: ($icon ?? $slot);
 @endphp
 
-@if ($icon instanceof \Illuminate\Contracts\Support\Htmlable)
+@if ($icon instanceof Htmlable)
     <span {{ $attributes->class($class) }}>
         {{ $icon }}
     </span>

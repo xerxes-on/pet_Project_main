@@ -1,5 +1,5 @@
 @php
-    use Filament\Support\Enums\IconSize;
+    use Filament\Support\Enums\IconSize;use Illuminate\View\ComponentAttributeBag;use function Filament\Support\generate_href_html;use function Filament\Support\get_color_css_variables;use function Filament\Support\prepare_inherited_attributes;
 @endphp
 
 @props([
@@ -36,7 +36,7 @@
     ]);
 
     $buttonStyles = \Illuminate\Support\Arr::toCssStyles([
-        \Filament\Support\get_color_css_variables(
+        get_color_css_variables(
             $color,
             shades: [50, 400],
             alias: 'dropdown.list.item',
@@ -60,7 +60,7 @@
     ]);
 
     $iconStyles = \Illuminate\Support\Arr::toCssStyles([
-        \Filament\Support\get_color_css_variables(
+        get_color_css_variables(
             $iconColor,
             shades: [400, 500],
             alias: 'dropdown.list.item.icon',
@@ -78,7 +78,7 @@
     ]);
 
     $labelStyles = \Illuminate\Support\Arr::toCssStyles([
-        \Filament\Support\get_color_css_variables(
+        get_color_css_variables(
             $color,
             shades: [400, 600],
             alias: 'dropdown.list.item.label',
@@ -103,7 +103,7 @@
         @endif
         @if ($keyBindings)
             x-bind:id="$id('key-bindings')"
-            x-mousetrap.global.{{ collect($keyBindings)->map(fn (string $keyBinding): string => str_replace('+', '-', $keyBinding))->implode('.') }}="document.getElementById($el.id).click()"
+        x-mousetrap.global.{{ collect($keyBindings)->map(fn (string $keyBinding): string => str_replace('+', '-', $keyBinding))->implode('.') }}="document.getElementById($el.id).click()"
         @endif
         @if ($hasTooltip)
             x-tooltip="{
@@ -126,8 +126,8 @@
         @if ($icon)
             <x-filament::icon
                 :attributes="
-                    \Filament\Support\prepare_inherited_attributes(
-                        new \Illuminate\View\ComponentAttributeBag([
+                    prepare_inherited_attributes(
+                        new ComponentAttributeBag([
                             'alias' => $iconAlias,
                             'icon' => $icon,
                             'wire:loading.remove.delay.' . config('filament.livewire_loading_delay', 'default') => $hasLoadingIndicator,
@@ -150,8 +150,8 @@
         @if ($hasLoadingIndicator)
             <x-filament::loading-indicator
                 :attributes="
-                    \Filament\Support\prepare_inherited_attributes(
-                        new \Illuminate\View\ComponentAttributeBag([
+                    prepare_inherited_attributes(
+                        new ComponentAttributeBag([
                             'wire:loading.delay.' . config('filament.livewire_loading_delay', 'default') => '',
                             'wire:target' => $loadingIndicatorTarget,
                         ])
@@ -178,13 +178,13 @@
     </button>
 @elseif ($tag === 'a')
     <a
-        {{ \Filament\Support\generate_href_html($href, $target === '_blank', $spaMode) }}
+        {{ generate_href_html($href, $target === '_blank', $spaMode) }}
         @if ($keyBindings || $hasTooltip)
             x-data="{}"
         @endif
         @if ($keyBindings)
             x-bind:id="$id('key-bindings')"
-            x-mousetrap.global.{{ collect($keyBindings)->map(fn (string $keyBinding): string => str_replace('+', '-', $keyBinding))->implode('.') }}="document.getElementById($el.id).click()"
+        x-mousetrap.global.{{ collect($keyBindings)->map(fn (string $keyBinding): string => str_replace('+', '-', $keyBinding))->implode('.') }}="document.getElementById($el.id).click()"
         @endif
         @if ($hasTooltip)
             x-tooltip="{
@@ -236,7 +236,7 @@
             @endif
             @if ($keyBindings)
                 x-bind:id="$id('key-bindings')"
-                x-mousetrap.global.{{ collect($keyBindings)->map(fn (string $keyBinding): string => str_replace('+', '-', $keyBinding))->implode('.') }}="document.getElementById($el.id).click()"
+            x-mousetrap.global.{{ collect($keyBindings)->map(fn (string $keyBinding): string => str_replace('+', '-', $keyBinding))->implode('.') }}="document.getElementById($el.id).click()"
             @endif
             @if ($hasTooltip)
                 x-tooltip="{

@@ -1,3 +1,7 @@
+@php use Filament\Forms\Components\Actions\Action; @endphp
+@php use function Filament\Support\get_color_css_variables; @endphp
+@php use function Filament\Support\prepare_inherited_attributes; @endphp
+@php use Illuminate\View\ComponentAttributeBag; @endphp
 @props([
     'alpineDisabled' => null,
     'alpineValid' => null,
@@ -20,12 +24,12 @@
 @php
     $prefixActions = array_filter(
         $prefixActions,
-        fn (\Filament\Forms\Components\Actions\Action $prefixAction): bool => $prefixAction->isVisible(),
+        fn (Action $prefixAction): bool => $prefixAction->isVisible(),
     );
 
     $suffixActions = array_filter(
         $suffixActions,
-        fn (\Filament\Forms\Components\Actions\Action $suffixAction): bool => $suffixAction->isVisible(),
+        fn (Action $suffixAction): bool => $suffixAction->isVisible(),
     );
 
     $hasPrefix = count($prefixActions) || $prefixIcon || filled($prefix);
@@ -55,7 +59,7 @@
     ]);
 
     $getIconStyles = fn (string | array $color = 'gray'): string => \Illuminate\Support\Arr::toCssStyles([
-        \Filament\Support\get_color_css_variables(
+        get_color_css_variables(
             $color,
             shades: [500],
             alias: 'input-wrapper.icon',
@@ -102,8 +106,8 @@
         <div
             @if (! $hasPrefix)
                 wire:loading.delay.{{ config('filament.livewire_loading_delay', 'default') }}.flex
-                wire:target="{{ $loadingIndicatorTarget }}"
-                wire:key="{{ \Illuminate\Support\Str::random() }}" {{-- Makes sure the loading indicator gets hidden again. --}}
+            wire:target="{{ $loadingIndicatorTarget }}"
+            wire:key="{{ \Illuminate\Support\Str::random() }}" {{-- Makes sure the loading indicator gets hidden again. --}}
             @endif
             @class([
                 'items-center gap-x-3 ps-3',
@@ -125,8 +129,8 @@
             @if ($prefixIcon)
                 <x-filament::icon
                     :attributes="
-                        \Filament\Support\prepare_inherited_attributes(
-                            new \Illuminate\View\ComponentAttributeBag([
+                        prepare_inherited_attributes(
+                            new ComponentAttributeBag([
                                 'alias' => $prefixIconAlias,
                                 'icon' => $prefixIcon,
                                 'wire:loading.remove.delay.' . config('filament.livewire_loading_delay', 'default') => $hasLoadingIndicator,
@@ -142,8 +146,8 @@
             @if ($hasLoadingIndicator)
                 <x-filament::loading-indicator
                     :attributes="
-                        \Filament\Support\prepare_inherited_attributes(
-                            new \Illuminate\View\ComponentAttributeBag([
+                        prepare_inherited_attributes(
+                            new ComponentAttributeBag([
                                 'wire:loading.delay.' . config('filament.livewire_loading_delay', 'default') => $hasPrefix,
                                 'wire:target' => $hasPrefix ? $loadingIndicatorTarget : null,
                             ])
@@ -164,9 +168,9 @@
         @if ($hasLoadingIndicator && (! $hasPrefix))
             @if ($inlinePrefix)
                 wire:loading.delay.{{ config('filament.livewire_loading_delay', 'default') }}.class.remove="ps-3"
-            @endif
+        @endif
 
-            wire:target="{{ $loadingIndicatorTarget }}"
+        wire:target="{{ $loadingIndicatorTarget }}"
         @endif
         @class([
             'min-w-0 flex-1',

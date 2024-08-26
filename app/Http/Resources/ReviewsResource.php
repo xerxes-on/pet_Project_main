@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Cassandra\Date;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,7 +19,7 @@ class ReviewsResource extends JsonResource
             'comment' => $this->comment,
             'rating' => $this->rating,
             'book' => $this->book->title,
-            'date' =>  Date('Y-m-d H:i', strtotime($this->created_at))
-    ];
+            'date' => Date('Y-m-d H:i', strtotime($this->created_at))
+        ];
     }
 }

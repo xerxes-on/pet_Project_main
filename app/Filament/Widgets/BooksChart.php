@@ -10,26 +10,26 @@ use Flowframe\Trend\TrendValue;
 class BooksChart extends ChartWidget
 {
     protected static ?string $heading = 'Books';
-        protected static ?int $sort = 1;
+    protected static ?int $sort = 1;
 
 
     protected function getData(): array
     {
         $data = Trend::model(Book::class)
-        ->between(
-            start: now()->startOfYear(),
-            end: now()->endOfYear(),
-        )
-        ->perMonth()
-        ->count();
+            ->between(
+                start: now()->startOfYear(),
+                end: now()->endOfYear(),
+            )
+            ->perMonth()
+            ->count();
         return [
             'datasets' => [
                 [
                     'label' => 'Books added',
-                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
+                    'data' => $data->map(fn(TrendValue $value) => $value->aggregate),
                     'backgroundColor' => '#36A2EB',
                     'borderColor' => '#9BD0F5',
-                    'fill' =>true,
+                    'fill' => true,
                     'borderJoinStyle' => 'miter'
                 ],
             ],

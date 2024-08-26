@@ -1,6 +1,6 @@
 @php
     use Filament\Support\Enums\Alignment;
-    use Filament\Support\Enums\IconSize;
+    use Filament\Support\Enums\IconSize;use Illuminate\Contracts\Support\Htmlable;use function Filament\Support\get_color_css_variables;use function Filament\Support\is_slot_empty;
 @endphp
 
 @props([
@@ -40,12 +40,12 @@
         );
     }
 
-    $hasHeaderActions = $headerActions instanceof \Illuminate\Contracts\Support\Htmlable
-        ? ! \Filament\Support\is_slot_empty($headerActions)
+    $hasHeaderActions = $headerActions instanceof Htmlable
+        ? ! is_slot_empty($headerActions)
         : filled($headerActions);
 
-    $hasFooterActions = $footerActions instanceof \Illuminate\Contracts\Support\Htmlable
-        ? ! \Filament\Support\is_slot_empty($footerActions)
+    $hasFooterActions = $footerActions instanceof Htmlable
+        ? ! is_slot_empty($footerActions)
         : filled($footerActions);
 
     $hasHeader = $hasIcon || $hasHeading || $hasDescription || $collapsible || $hasHeaderActions || filled((string) $headerEnd);
@@ -58,10 +58,10 @@
     }"
     @if ($collapsible)
         x-on:collapse-section.window="if ($event.detail.id == $el.id) isCollapsed = true"
-        x-on:expand="isCollapsed = false"
-        x-on:open-section.window="if ($event.detail.id == $el.id) isCollapsed = false"
-        x-on:toggle-section.window="if ($event.detail.id == $el.id) isCollapsed = ! isCollapsed"
-        x-bind:class="isCollapsed && 'fi-collapsed'"
+    x-on:expand="isCollapsed = false"
+    x-on:open-section.window="if ($event.detail.id == $el.id) isCollapsed = false"
+    x-on:toggle-section.window="if ($event.detail.id == $el.id) isCollapsed = ! isCollapsed"
+    x-bind:class="isCollapsed && 'fi-collapsed'"
     @endif
     {{
         $attributes->class([
@@ -106,7 +106,7 @@
                             },
                         ])
                         @style([
-                            \Filament\Support\get_color_css_variables(
+                            get_color_css_variables(
                                 $iconColor,
                                 shades: [400, 500],
                                 alias: 'section.header.icon',
@@ -169,10 +169,10 @@
     <div
         @if ($collapsible)
             x-bind:aria-expanded="(! isCollapsed).toString()"
-            @if ($collapsed || $persistCollapsed)
-                x-cloak
-            @endif
-            x-bind:class="{
+        @if ($collapsed || $persistCollapsed)
+            x-cloak
+        @endif
+        x-bind:class="{
                 'invisible absolute h-0 overflow-hidden border-none': isCollapsed,
             }"
         @endif

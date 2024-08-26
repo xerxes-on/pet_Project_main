@@ -1,7 +1,7 @@
 @php
     use Filament\Support\Enums\ActionSize;
     use Filament\Support\Enums\IconPosition;
-    use Filament\Support\Enums\IconSize;
+    use Filament\Support\Enums\IconSize;use Illuminate\View\ComponentAttributeBag;use function Filament\Support\generate_href_html;use function Filament\Support\get_color_css_variables;use function Filament\Support\prepare_inherited_attributes;
 @endphp
 
 @props([
@@ -105,7 +105,7 @@
     ]);
 
     $buttonStyles = \Illuminate\Support\Arr::toCssStyles([
-        \Filament\Support\get_color_css_variables(
+        get_color_css_variables(
             $color,
             shades: [400, 500, 600],
             alias: 'button',
@@ -173,67 +173,67 @@
                 default => 'hidden',
             }
         "
-        :attributes="\Filament\Support\prepare_inherited_attributes($attributes)"
+        :attributes="prepare_inherited_attributes($attributes)"
     />
 @endif
 
 <{{ $tag }}
     @if ($tag === 'a')
-        {{ \Filament\Support\generate_href_html($href, $target === '_blank', $spaMode) }}
+        {{ generate_href_html($href, $target === '_blank', $spaMode) }}
     @endif
     @if (($keyBindings || $hasTooltip) && (! $hasFormProcessingLoadingIndicator))
-        x-data="{}"
-    @endif
-    @if ($keyBindings)
-        x-bind:id="$id('key-bindings')"
-        x-mousetrap.global.{{ collect($keyBindings)->map(fn (string $keyBinding): string => str_replace('+', '-', $keyBinding))->implode('.') }}="document.getElementById($el.id).click()"
-    @endif
-    @if ($hasTooltip)
-        x-tooltip="{
-            content: @js($tooltip),
-            theme: $store.theme,
-        }"
-    @endif
-    @if ($hasFormProcessingLoadingIndicator)
-        x-data="{
-            form: null,
-            isProcessing: false,
-            processingMessage: null,
-        }"
-        x-init="
-            form = $el.closest('form')
+    x-data="{}"
+@endif
+@if ($keyBindings)
+    x-bind:id="$id('key-bindings')"
+    x-mousetrap.global.{{ collect($keyBindings)->map(fn (string $keyBinding): string => str_replace('+', '-', $keyBinding))->implode('.') }}="document.getElementById($el.id).click()"
+@endif
+@if ($hasTooltip)
+    x-tooltip="{
+    content: @js($tooltip),
+    theme: $store.theme,
+    }"
+@endif
+@if ($hasFormProcessingLoadingIndicator)
+    x-data="{
+    form: null,
+    isProcessing: false,
+    processingMessage: null,
+    }"
+    x-init="
+    form = $el.closest('form')
 
-            form?.addEventListener('form-processing-started', (event) => {
-                isProcessing = true
-                processingMessage = event.detail.message
-            })
+    form?.addEventListener('form-processing-started', (event) => {
+    isProcessing = true
+    processingMessage = event.detail.message
+    })
 
-            form?.addEventListener('form-processing-finished', () => {
-                isProcessing = false
-            })
-        "
-        x-bind:class="{ 'enabled:opacity-70 enabled:cursor-wait': isProcessing }"
-    @endif
-    {{
-        $attributes
-            ->merge([
-                'disabled' => $disabled,
-                'form' => $formId,
-                'type' => $tag === 'button' ? $type : null,
-                'wire:loading.attr' => $tag === 'button' ? 'disabled' : null,
-                'wire:target' => ($hasLoadingIndicator && $loadingIndicatorTarget) ? $loadingIndicatorTarget : null,
-                'x-bind:disabled' => $hasFormProcessingLoadingIndicator ? 'isProcessing' : null,
-            ], escape: false)
-            ->class([$buttonClasses])
-            ->style([$buttonStyles])
-    }}
+    form?.addEventListener('form-processing-finished', () => {
+    isProcessing = false
+    })
+    "
+    x-bind:class="{ 'enabled:opacity-70 enabled:cursor-wait': isProcessing }"
+@endif
+{{
+    $attributes
+        ->merge([
+            'disabled' => $disabled,
+            'form' => $formId,
+            'type' => $tag === 'button' ? $type : null,
+            'wire:loading.attr' => $tag === 'button' ? 'disabled' : null,
+            'wire:target' => ($hasLoadingIndicator && $loadingIndicatorTarget) ? $loadingIndicatorTarget : null,
+            'x-bind:disabled' => $hasFormProcessingLoadingIndicator ? 'isProcessing' : null,
+        ], escape: false)
+        ->class([$buttonClasses])
+        ->style([$buttonStyles])
+}}
 >
-    @if ($iconPosition === IconPosition::Before)
-        @if ($icon)
-            <x-filament::icon
-                :attributes="
-                    \Filament\Support\prepare_inherited_attributes(
-                        new \Illuminate\View\ComponentAttributeBag([
+@if ($iconPosition === IconPosition::Before)
+    @if ($icon)
+        <x-filament::icon
+            :attributes="
+                    prepare_inherited_attributes(
+                        new ComponentAttributeBag([
                             'alias' => $iconAlias,
                             'icon' => $icon,
                             'wire:loading.remove.delay.' . config('filament.livewire_loading_delay', 'default') => $hasLoadingIndicator,
@@ -241,55 +241,55 @@
                         ])
                     )->class([$iconClasses])
                 "
-            />
-        @endif
+        />
+    @endif
 
-        @if ($hasLoadingIndicator)
-            <x-filament::loading-indicator
-                :attributes="
-                    \Filament\Support\prepare_inherited_attributes(
-                        new \Illuminate\View\ComponentAttributeBag([
+    @if ($hasLoadingIndicator)
+        <x-filament::loading-indicator
+            :attributes="
+                    prepare_inherited_attributes(
+                        new ComponentAttributeBag([
                             'wire:loading.delay.' . config('filament.livewire_loading_delay', 'default') => '',
                             'wire:target' => $loadingIndicatorTarget,
                         ])
                     )->class([$iconClasses])
                 "
-            />
-        @endif
-
-        @if ($hasFormProcessingLoadingIndicator)
-            <x-filament::loading-indicator
-                x-cloak="x-cloak"
-                x-show="isProcessing"
-                :class="$iconClasses"
-            />
-        @endif
+        />
     @endif
 
-    <span
-        @if ($hasFormProcessingLoadingIndicator)
-            x-show="! isProcessing"
-        @endif
-        class="{{ $labelClasses }}"
-    >
+    @if ($hasFormProcessingLoadingIndicator)
+        <x-filament::loading-indicator
+            x-cloak="x-cloak"
+            x-show="isProcessing"
+            :class="$iconClasses"
+        />
+    @endif
+@endif
+
+<span
+    @if ($hasFormProcessingLoadingIndicator)
+        x-show="! isProcessing"
+    @endif
+    class="{{ $labelClasses }}"
+>
         {{ $slot }}
     </span>
 
-    @if ($hasFormProcessingLoadingIndicator)
-        <span
-            x-cloak
-            x-show="isProcessing"
-            x-text="processingMessage"
-            class="{{ $labelClasses }}"
-        ></span>
-    @endif
+@if ($hasFormProcessingLoadingIndicator)
+    <span
+        x-cloak
+        x-show="isProcessing"
+        x-text="processingMessage"
+        class="{{ $labelClasses }}"
+    ></span>
+@endif
 
-    @if ($iconPosition === IconPosition::After)
-        @if ($icon)
-            <x-filament::icon
-                :attributes="
-                    \Filament\Support\prepare_inherited_attributes(
-                        new \Illuminate\View\ComponentAttributeBag([
+@if ($iconPosition === IconPosition::After)
+    @if ($icon)
+        <x-filament::icon
+            :attributes="
+                    prepare_inherited_attributes(
+                        new ComponentAttributeBag([
                             'alias' => $iconAlias,
                             'icon' => $icon,
                             'wire:loading.remove.delay.' . config('filament.livewire_loading_delay', 'default') => $hasLoadingIndicator,
@@ -297,36 +297,36 @@
                         ])
                     )->class([$iconClasses])
                 "
-            />
-        @endif
+        />
+    @endif
 
-        @if ($hasLoadingIndicator)
-            <x-filament::loading-indicator
-                :attributes="
-                    \Filament\Support\prepare_inherited_attributes(
-                        new \Illuminate\View\ComponentAttributeBag([
+    @if ($hasLoadingIndicator)
+        <x-filament::loading-indicator
+            :attributes="
+                    prepare_inherited_attributes(
+                        new ComponentAttributeBag([
                             'wire:loading.delay.' . config('filament.livewire_loading_delay', 'default') => '',
                             'wire:target' => $loadingIndicatorTarget,
                         ])
                     )->class([$iconClasses])
                 "
-            />
-        @endif
-
-        @if ($hasFormProcessingLoadingIndicator)
-            <x-filament::loading-indicator
-                x-cloak="x-cloak"
-                x-show="isProcessing"
-                :class="$iconClasses"
-            />
-        @endif
+        />
     @endif
 
-    @if (filled($badge))
-        <div class="{{ $badgeContainerClasses }}">
-            <x-filament::badge :color="$badgeColor" :size="$badgeSize">
-                {{ $badge }}
-            </x-filament::badge>
-        </div>
+    @if ($hasFormProcessingLoadingIndicator)
+        <x-filament::loading-indicator
+            x-cloak="x-cloak"
+            x-show="isProcessing"
+            :class="$iconClasses"
+        />
     @endif
+@endif
+
+@if (filled($badge))
+    <div class="{{ $badgeContainerClasses }}">
+        <x-filament::badge :color="$badgeColor" :size="$badgeSize">
+            {{ $badge }}
+        </x-filament::badge>
+    </div>
+@endif
 </{{ $tag }}>

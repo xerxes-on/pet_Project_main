@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\QuotesResource;
 use App\Models\Quote;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class QuoteController extends Controller
 {
@@ -74,7 +74,7 @@ class QuoteController extends Controller
             $quote->delete();
             return response(204);
         } else {
-            return response('No such kind of quote' );
+            return response('No such kind of quote');
         }
 
     }
