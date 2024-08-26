@@ -16,14 +16,11 @@ class RoleSeeder extends Seeder
     {
         $superAdminWeb = Role::create([
             'name' => 'super_admin',
-            'guard_name' => 'web']);
-
-
-        // Assign permissions to roles
-        $superAdminWeb->givePermissionTo(Permission::all());
+            'guard_name' => 'web'
+        ]);
 
         $user = \App\Models\User::find(1);
-        $user->assignRole($superAdminWeb);
+        $user->assignRole('super_admin');
 
     }
 }

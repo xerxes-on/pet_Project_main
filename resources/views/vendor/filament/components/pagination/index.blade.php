@@ -6,10 +6,10 @@
 ])
 
 @php
-    use Illuminate\Contracts\Pagination\CursorPaginator;
+    use Illuminate\Contracts\Pagination\CursorPaginator;use Illuminate\Pagination\LengthAwarePaginator;
 
     $isRtl = __('filament-panels::layout.direction') === 'rtl';
-    $isSimple = ! $paginator instanceof \Illuminate\Pagination\LengthAwarePaginator;
+    $isSimple = ! $paginator instanceof LengthAwarePaginator;
 @endphp
 
 <nav
@@ -147,7 +147,7 @@
 
             @foreach ($paginator->render()->offsetGet('elements') as $element)
                 @if (is_string($element))
-                    <x-filament::pagination.item disabled :label="$element" />
+                    <x-filament::pagination.item disabled :label="$element"/>
                 @endif
 
                 @if (is_array($element))

@@ -13,7 +13,7 @@
 ])
 
 @php
-    use Filament\Support\Enums\MaxWidth;
+    use Filament\Support\Enums\MaxWidth;use function Filament\Support\is_slot_empty;
 
     $sizeConfig = collect([
         'availableHeight' => $availableHeight,
@@ -45,7 +45,7 @@
         {{ $trigger }}
     </div>
 
-    @if (! \Filament\Support\is_slot_empty($slot))
+    @if (! is_slot_empty($slot))
         <div
             x-cloak
             x-float{{ $placement ? ".placement.{$placement}" : '' }}{{ $size ? '.size' : '' }}.flip{{ $shift ? '.shift' : '' }}{{ $teleport ? '.teleport' : '' }}{{ $offset ? '.offset' : '' }}="{ offset: {{ $offset }}, {{ $size ? ('size: ' . $sizeConfig) : '' }} }"
@@ -54,7 +54,7 @@
             x-transition:leave-end="opacity-0"
             @if ($attributes->has('wire:key'))
                 wire:ignore.self
-                wire:key="{{ $attributes->get('wire:key') }}.panel"
+            wire:key="{{ $attributes->get('wire:key') }}.panel"
             @endif
             @class([
                 'fi-dropdown-panel absolute z-10 w-screen divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-900 dark:ring-white/10',

@@ -20,7 +20,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     libpq-dev \
-    libicu-dev
+    libicu-dev\
+    npm
 
 # Install PHP extensions
 RUN docker-php-ext-configure intl \
@@ -33,6 +34,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . /var/www/html
 
 # Install application dependencies
+RUN
 RUN composer install
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000

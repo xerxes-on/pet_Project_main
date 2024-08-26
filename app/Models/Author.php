@@ -9,12 +9,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Author extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
-    public function quotes():HasMany
+
+    public function quotes(): HasMany
     {
         return $this->hasMany(Quote::class);
     }
-    public function books():HasMany
+
+    public function books(): HasMany
     {
         return $this->hasMany(Book::class);
     }

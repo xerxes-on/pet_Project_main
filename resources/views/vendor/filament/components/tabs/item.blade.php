@@ -1,5 +1,5 @@
 @php
-    use Filament\Support\Enums\IconPosition;
+    use Filament\Support\Enums\IconPosition;use function Filament\Support\generate_href_html;
 @endphp
 
 @props([
@@ -45,79 +45,79 @@
 
 <{{ $tag }}
     @if ($tag === 'button')
-        type="{{ $type }}"
-    @elseif ($tag === 'a')
-        {{ \Filament\Support\generate_href_html($href, $target === '_blank', $spaMode) }}
-    @endif
+    type="{{ $type }}"
+@elseif ($tag === 'a')
+    {{ generate_href_html($href, $target === '_blank', $spaMode) }}
+@endif
+@if ($hasAlpineActiveClasses)
+    x-bind:class="{
+    @js($inactiveItemClasses): ! {{ $alpineActive }},
+    @js($activeItemClasses): {{ $alpineActive }},
+    }"
+@endif
+{{
+    $attributes
+        ->merge([
+            'aria-selected' => $active,
+            'role' => 'tab',
+        ])
+        ->class([
+            'fi-tabs-item group flex items-center gap-x-2 rounded-lg px-3 py-2 text-sm font-medium outline-none transition duration-75',
+            $inactiveItemClasses => (! $hasAlpineActiveClasses) && (! $active),
+            $activeItemClasses => (! $hasAlpineActiveClasses) && $active,
+        ])
+}}
+>
+@if ($icon && $iconPosition === IconPosition::Before)
+    <x-filament::icon
+        :icon="$icon"
+        :x-bind:class="$hasAlpineActiveClasses ? '{ ' . \Illuminate\Support\Js::from($inactiveIconClasses) . ': ! (' . $alpineActive . '), ' . \Illuminate\Support\Js::from($activeIconClasses) . ': ' . $alpineActive . ' }' : null"
+        @class([
+            $iconClasses,
+            $inactiveIconClasses => (! $hasAlpineActiveClasses) && (! $active),
+            $activeIconClasses => (! $hasAlpineActiveClasses) && $active,
+        ])
+    />
+@endif
+
+<span
     @if ($hasAlpineActiveClasses)
         x-bind:class="{
-            @js($inactiveItemClasses): ! {{ $alpineActive }},
-            @js($activeItemClasses): {{ $alpineActive }},
-        }"
-    @endif
-    {{
-        $attributes
-            ->merge([
-                'aria-selected' => $active,
-                'role' => 'tab',
-            ])
-            ->class([
-                'fi-tabs-item group flex items-center gap-x-2 rounded-lg px-3 py-2 text-sm font-medium outline-none transition duration-75',
-                $inactiveItemClasses => (! $hasAlpineActiveClasses) && (! $active),
-                $activeItemClasses => (! $hasAlpineActiveClasses) && $active,
-            ])
-    }}
->
-    @if ($icon && $iconPosition === IconPosition::Before)
-        <x-filament::icon
-            :icon="$icon"
-            :x-bind:class="$hasAlpineActiveClasses ? '{ ' . \Illuminate\Support\Js::from($inactiveIconClasses) . ': ! (' . $alpineActive . '), ' . \Illuminate\Support\Js::from($activeIconClasses) . ': ' . $alpineActive . ' }' : null"
-            @class([
-                $iconClasses,
-                $inactiveIconClasses => (! $hasAlpineActiveClasses) && (! $active),
-                $activeIconClasses => (! $hasAlpineActiveClasses) && $active,
-            ])
-        />
-    @endif
-
-    <span
-        @if ($hasAlpineActiveClasses)
-            x-bind:class="{
                 @js($inactiveLabelClasses): ! {{ $alpineActive }},
                 @js($activeLabelClasses): {{ $alpineActive }},
             }"
         @endif
-        @class([
-            'fi-tabs-item-label transition duration-75',
-            $inactiveLabelClasses => (! $hasAlpineActiveClasses) && (! $active),
-            $activeLabelClasses => (! $hasAlpineActiveClasses) && $active,
-        ])
+    @class([
+        'fi-tabs-item-label transition duration-75',
+        $inactiveLabelClasses => (! $hasAlpineActiveClasses) && (! $active),
+        $activeLabelClasses => (! $hasAlpineActiveClasses) && $active,
+    ])
     >
         {{ $slot }}
     </span>
 
-    @if ($icon && $iconPosition === IconPosition::After)
-        <x-filament::icon
-            :icon="$icon"
-            :x-bind:class="$hasAlpineActiveClasses ? '{ ' . \Illuminate\Support\Js::from($inactiveIconClasses) . ': ! (' . $alpineActive . '), ' . \Illuminate\Support\Js::from($activeIconClasses) . ': ' . $alpineActive . ' }' : null"
-            @class([
-                $iconClasses,
-                $inactiveIconClasses => (! $hasAlpineActiveClasses) && (! $active),
-                $activeIconClasses => (! $hasAlpineActiveClasses) && $active,
-            ])
-        />
-    @endif
+@if ($icon && $iconPosition === IconPosition::After)
+    <x-filament::icon
+        :icon="$icon"
+        :x-bind:class="$hasAlpineActiveClasses ? '{ ' . \Illuminate\Support\Js::from($inactiveIconClasses) . ': ! (' . $alpineActive . '), ' . \Illuminate\Support\Js::from($activeIconClasses) . ': ' . $alpineActive . ' }' : null"
+        @class([
+            $iconClasses,
+            $inactiveIconClasses => (! $hasAlpineActiveClasses) && (! $active),
+            $activeIconClasses => (! $hasAlpineActiveClasses) && $active,
+        ])
+    />
+@endif
 
-    @if (filled($badge))
-        <x-filament::badge
-            :color="$badgeColor"
-            :icon="$badgeIcon"
-            :icon-position="$badgeIconPosition"
-            size="sm"
-            :tooltip="$badgeTooltip"
-            class="w-max"
-        >
-            {{ $badge }}
-        </x-filament::badge>
-    @endif
+@if (filled($badge))
+    <x-filament::badge
+        :color="$badgeColor"
+        :icon="$badgeIcon"
+        :icon-position="$badgeIconPosition"
+        size="sm"
+        :tooltip="$badgeTooltip"
+        class="w-max"
+    >
+        {{ $badge }}
+    </x-filament::badge>
+@endif
 </{{ $tag }}>

@@ -1,5 +1,5 @@
 @php
-    use Filament\Support\Enums\Alignment;
+    use Filament\Support\Enums\Alignment;use Illuminate\Contracts\Support\Htmlable;use function Filament\Support\is_slot_empty;
 @endphp
 
 @props([
@@ -22,13 +22,13 @@
 
     $hasActions = false;
 
-    $hasSlot = ! \Filament\Support\is_slot_empty($slot);
-    $actionsAreHtmlable = $actions instanceof \Illuminate\Contracts\Support\Htmlable;
+    $hasSlot = ! is_slot_empty($slot);
+    $actionsAreHtmlable = $actions instanceof Htmlable;
 
     if ($hasSlot) {
         $hasActions = true;
     } elseif ($actionsAreHtmlable) {
-        $hasActions = ! \Filament\Support\is_slot_empty($actions);
+        $hasActions = ! is_slot_empty($actions);
     } else {
         $hasActions = filled($actions);
     }

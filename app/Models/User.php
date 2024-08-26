@@ -6,14 +6,14 @@ namespace App\Models;
 use Althinect\FilamentSpatieRolesPermissions\Concerns\HasSuperAdmin;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements  JWTSubject, MustVerifyEmail
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
     use HasFactory, Notifiable, HasApiTokens, HasRoles, HasSuperAdmin, HasPanelShield;
 
@@ -24,27 +24,22 @@ class User extends Authenticatable implements  JWTSubject, MustVerifyEmail
         'remember_token',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
     public function books()
     {
         return $this->belongsToMany(Book::class);
     }
+
     public function reviews()
     {
         return $this->hasMany(Rating::class);
     }
+
     public function likedquotes()
     {
         return $this->belongsToMany(Quote::class, 'user_quotes');
     }
 
-        public function getJWTIdentifier()
+    public function getJWTIdentifier()
     {
         return $this->getKey();
     }
@@ -57,6 +52,14 @@ class User extends Authenticatable implements  JWTSubject, MustVerifyEmail
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 
 

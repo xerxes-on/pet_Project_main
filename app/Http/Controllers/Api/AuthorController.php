@@ -13,9 +13,10 @@ class AuthorController
      */
     public function index()
     {
-         $authors = Author::with('books')->paginate(10);
-         return response(AuthorsResource::collection($authors));
+        $authors = Author::with('books')->paginate(10);
+        return response(AuthorsResource::collection($authors));
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -29,8 +30,8 @@ class AuthorController
      */
     public function show(string $id)
     {
-         $author = Author::with('books')->find($id);
-            if ($author) {
+        $author = Author::with('books')->find($id);
+        if ($author) {
             return response(new AuthorsResource($author));
         } else {
             return response('There is no hotel with such id');

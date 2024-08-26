@@ -1,15 +1,15 @@
 @php
     use Filament\Support\Enums\Alignment;
-    use Filament\Support\Enums\MaxWidth;
+    use Filament\Support\Enums\MaxWidth;use Filament\Support\View\Components\Modal;use Illuminate\View\ComponentAttributeBag;use function Filament\Support\get_color_css_variables;use function Filament\Support\is_slot_empty;
 @endphp
 
 @props([
     'alignment' => Alignment::Start,
     'ariaLabelledby' => null,
-    'autofocus' => \Filament\Support\View\Components\Modal::$isAutofocused,
-    'closeButton' => \Filament\Support\View\Components\Modal::$hasCloseButton,
-    'closeByClickingAway' => \Filament\Support\View\Components\Modal::$isClosedByClickingAway,
-    'closeByEscaping' => \Filament\Support\View\Components\Modal::$isClosedByEscaping,
+    'autofocus' => Modal::$isAutofocused,
+    'closeButton' => Modal::$hasCloseButton,
+    'closeByClickingAway' => Modal::$isClosedByClickingAway,
+    'closeByEscaping' => Modal::$isClosedByEscaping,
     'closeEventName' => 'close-modal',
     'description' => null,
     'displayClasses' => 'inline-block',
@@ -85,7 +85,7 @@
     }"
     @if ($id)
         x-on:{{ $closeEventName }}.window="if ($event.detail.id === '{{ $id }}') close()"
-        x-on:{{ $openEventName }}.window="if ($event.detail.id === '{{ $id }}') open()"
+    x-on:{{ $openEventName }}.window="if ($event.detail.id === '{{ $id }}') open()"
     @endif
     x-trap.noscroll{{ $autofocus ? '' : '.noautofocus' }}="isOpen"
     x-bind:class="{
@@ -157,17 +157,17 @@
                     @if ($width === MaxWidth::Screen)
                     @elseif ($slideOver)
                         x-transition:enter-start="translate-x-full rtl:-translate-x-full"
-                        x-transition:enter-end="translate-x-0"
-                        x-transition:leave-start="translate-x-0"
-                        x-transition:leave-end="translate-x-full rtl:-translate-x-full"
+                    x-transition:enter-end="translate-x-0"
+                    x-transition:leave-start="translate-x-0"
+                    x-transition:leave-end="translate-x-full rtl:-translate-x-full"
                     @else
                         x-transition:enter-start="scale-95 opacity-0"
-                        x-transition:enter-end="scale-100 opacity-100"
-                        x-transition:leave-start="scale-100 opacity-100"
-                        x-transition:leave-end="scale-95 opacity-0"
+                    x-transition:enter-end="scale-100 opacity-100"
+                    x-transition:leave-start="scale-100 opacity-100"
+                    x-transition:leave-end="scale-95 opacity-0"
                     @endif
                     {{
-                        ($extraModalWindowAttributeBag ?? new \Illuminate\View\ComponentAttributeBag)->class([
+                        ($extraModalWindowAttributeBag ?? new ComponentAttributeBag)->class([
                             'fi-modal-window pointer-events-auto relative row-start-2 flex w-full cursor-default flex-col bg-white shadow-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10',
                             'fi-modal-slide-over-window ms-auto overflow-y-auto' => $slideOver,
                             // Using an arbitrary value instead of the h-dvh class that was added in Tailwind CSS v3.4.0
@@ -262,7 +262,7 @@
                                                 },
                                             ])
                                             @style([
-                                                \Filament\Support\get_color_css_variables(
+                                                get_color_css_variables(
                                                     $iconColor,
                                                     shades: [100, 400, 500, 600],
                                                     alias: 'modal.icon',
@@ -305,7 +305,7 @@
                         </div>
                     @endif
 
-                    @if (! \Filament\Support\is_slot_empty($slot))
+                    @if (! is_slot_empty($slot))
                         <div
                             @class([
                                 'fi-modal-content flex flex-col gap-y-4 py-6',
@@ -318,7 +318,7 @@
                         </div>
                     @endif
 
-                    @if ((! \Filament\Support\is_slot_empty($footer)) || (is_array($footerActions) && count($footerActions)) || (! is_array($footerActions) && (! \Filament\Support\is_slot_empty($footerActions))))
+                    @if ((! is_slot_empty($footer)) || (is_array($footerActions) && count($footerActions)) || (! is_array($footerActions) && (! is_slot_empty($footerActions))))
                         <div
                             @class([
                                 'fi-modal-footer w-full',
@@ -327,11 +327,11 @@
                                 'fi-sticky sticky bottom-0 border-t border-gray-200 bg-white py-5 dark:border-white/10 dark:bg-gray-900' => $stickyFooter,
                                 'rounded-b-xl' => $stickyFooter && ! ($slideOver || ($width === MaxWidth::Screen)),
                                 'pb-6' => ! $stickyFooter,
-                                'mt-6' => (! $stickyFooter) && \Filament\Support\is_slot_empty($slot),
+                                'mt-6' => (! $stickyFooter) && is_slot_empty($slot),
                                 'mt-auto' => $slideOver,
                             ])
                         >
-                            @if (! \Filament\Support\is_slot_empty($footer))
+                            @if (! is_slot_empty($footer))
                                 {{ $footer }}
                             @else
                                 <div

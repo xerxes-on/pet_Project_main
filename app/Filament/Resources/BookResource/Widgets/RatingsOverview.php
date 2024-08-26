@@ -24,16 +24,18 @@ class RatingsOverview extends ChartWidget
             ->whereBetween('rating', [7, 10])
             ->count();
         return [
-            'datasets' => [[
-                'label' => 'Rating',
-                'data' => [$count1To5, $count5To7, $count7To10],
-                'backgroundColor' => [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
-                ],
-                'hoverOffset' => 4
-            ]],
+            'datasets' => [
+                [
+                    'label' => 'Rating',
+                    'data' => [$count1To5, $count5To7, $count7To10],
+                    'backgroundColor' => [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)'
+                    ],
+                    'hoverOffset' => 4
+                ]
+            ],
             'labels' => [
                 'Bad',
                 'Good',

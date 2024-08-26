@@ -71,7 +71,7 @@ class BookResource extends Resource
                 Tables\Columns\TextColumn::make('author.name'),
                 Tables\Columns\TextColumn::make('published_date')
                     ->sortable(),
-            Tables\Columns\TextColumn::make('ratings_count')
+                Tables\Columns\TextColumn::make('ratings_count')
                     ->label('Number of reviews')
                     ->counts('ratings')
                     ->sortable(),
