@@ -39,7 +39,7 @@
         <h1 class="text-5xl mb-5">Welcome to Letsrate</h1>
         <p class="mb-5">Sign Up to Continue</p>
 
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route('register-user') }}">
             @csrf
             <div class="input-group">
                 <i class="fas fa-user"></i>

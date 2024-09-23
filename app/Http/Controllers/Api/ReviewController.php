@@ -26,13 +26,12 @@ class ReviewController extends Controller
     {
         $request->validate(
             [
-                'rating' => 'min:1|max:10|required',
-                'comment' => 'required| min:10',
+                'rating' => 'min:1|max:5|required',
+                'comment' => 'nullable|min:10',
             ]
         );
         $inserting = $request->all();
         $inserting['user_id'] = auth()->user()->id;
-
         Rating::create($inserting);
         return response()->json([
             'message' => 'Created Successfully 🙂',
@@ -48,7 +47,7 @@ class ReviewController extends Controller
         if ($review) {
             return response(new ReviewsResource($review));
         } else {
-            return response('There is no hotel with such id');
+            return response('There is no review with such id');
         }
     }
 
@@ -92,7 +91,27 @@ class ReviewController extends Controller
         } else {
             return response('Unauthorized');
         }
+    }
 
+    public function like($id)
+    {
+        $user = auth()->user();
+        $rating = Rating::find($id);
 
+        if ($user->likedRatings()->where('rating_id', $id)->exists()) {
+            $user->likedRatings()->detach($id);
+            $rating->decrement('likes');
+            return response()->json([
+                'message' => 'Unliked successfully',
+                'likes' => $rating->likes
+            ]);
+        } else {
+            $user->likedRatings()->attach($id);
+            $rating->increment('likes');
+            return response()->json([
+                'message' => 'Liked successfully',
+                'likes' => $rating->likes
+            ]);
+        }
     }
 }

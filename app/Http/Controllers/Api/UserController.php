@@ -11,9 +11,14 @@ class UserController extends Controller
 {
     public function profile()
     {
-        $user_info = Auth::user()->with('books');
+        $user_info = User::with('books',
+                                'likedQuotes',
+                                'reviews',
+                                'likedGenres',
+                                'following',
+                                'followers')->find(auth()->user()->id);
         return response()->json([
-            'user' => $user_info,
+            'user' => $user_info
         ]);
 
     }
@@ -28,7 +33,7 @@ class UserController extends Controller
     public function my_liked_quotes()
     {
         return response()->json([
-            'my_quotes' => Auth::user()->quotes
+            'my_quotes' => Auth::user()->likedQuotes()
         ]);
     }
 
@@ -42,27 +47,38 @@ class UserController extends Controller
         ]);
         $updating_data = (array) $request->all();
         if ($request->hasFile('profile_picture')) {
-
             //        img handling + naming
             $file = $request->file('profile_picture');
             $fileName = time()."-".$file->getClientOriginalName();
             $file->move('assets/images/user_pics', $fileName);
-
             $updating_data['profile_picture'] = $fileName;
-//            remove the old pic
-            if ($user->pic_changed) {
-                unlink('assets/images/user_pics/'.$user->profile_picture);
-            } else {
-                $user->pic_changed = true;
-                $user->save();
-            }
         }
         $user->update($updating_data);
+        $user_info = User::with('books',
+                            'likedQuotes',
+                            'reviews',
+                            'likedGenres',
+                            'following',
+                            'followers')
+                            ->find(auth()->user()->id);
         return response()->json([
-            'message' => "Successfully changed 🤗",
-            'updated_data' => $updating_data
+            'user' => $user_info
         ]);
 
+
     }
+
+    public function follow(User $user)
+    {
+        $current_user = User::find(auth()->user()->id);
+        if($current_user->following()->where('following_id',$user->id )->exists()){
+            auth()->user()->following()->detach($user->id);
+            return response()->json(['message' => 'User unfollowed successfully']);
+        }else{
+            auth()->user()->following()->attach($user->id);
+            return response()->json(['message' => 'User followed successfully']);
+        }
+    }
+
 
 }

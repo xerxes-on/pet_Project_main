@@ -13,8 +13,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-      User::factory()->count(1)->create([
-            'password' => \Hash::make('admin-password')
+      User::factory()->count(100)->create([
+            'password' => \Hash::make('user_password')
         ]);
     }
 }

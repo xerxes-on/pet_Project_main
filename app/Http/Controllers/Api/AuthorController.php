@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\AuthorsResource;
 use App\Models\Author;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AuthorController
@@ -17,17 +18,6 @@ class AuthorController
         return response(AuthorsResource::collection($authors));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $author = Author::with('books')->find($id);
@@ -38,19 +28,20 @@ class AuthorController
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function follow(Author $author)
     {
-        //
+        $user = User::find(auth()->user()->id);
+        if($user->followingAuthors()->where('author_id',$author->id )->exists()){
+            auth()->user()->followingAuthors()->detach($author->id);
+            return response()->json(['message' => 'Author unfollowed successfully']);
+        }else{
+            auth()->user()->followingAuthors()->attach($author->id);
+            return response()->json(['message' => 'Author followed successfully']);
+        }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function isFollowing(Author $author)
     {
-        //
+        $isFollowing = auth()->user()->followingAuthors()->where('author_id', $author->id)->exists();
+        return response()->json(['isFollowing' => $isFollowing]);
     }
 }

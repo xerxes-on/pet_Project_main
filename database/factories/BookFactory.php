@@ -24,8 +24,8 @@ class BookFactory extends Factory
             'published_date' => $this->faker->date(),
             'rating' => $this->faker->randomFloat(2, 0, 10),
             'created_at' => $this->faker->dateTimeBetween('-1 year', now()),
-            'images' => $faker->imageUrl(400, 400, ['cats', 'dogs']),
-
+            'image' => $faker->imageUrl(400, 200, ['cats', 'dogs']),
+            'description' => $this->faker->paragraph(9)
         ];
     }
 }

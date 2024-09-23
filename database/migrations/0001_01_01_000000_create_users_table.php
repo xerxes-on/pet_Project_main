@@ -17,11 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('profile_picture')->nullable();
+            $table->string('profile_picture')->default('https://cataas.com/cat');
             $table->date('date_of_birth')->nullable();;
-            $table->integer('gender')->nullable();;
-            $table->string('username')->nullable();;
-
+            $table->integer('gender')->default(2);;
+            $table->string('username')->unique();;
             $table->rememberToken();
             $table->timestamps();
         });

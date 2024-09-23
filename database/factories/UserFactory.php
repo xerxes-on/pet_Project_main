@@ -21,8 +21,6 @@ class UserFactory extends Factory
             'email_verified_at' => $this->faker->date(),
             'username' => $this->faker->userName(),
             'gender' => $this->faker->numberBetween(0, 2),
-
-
         ];
     }
 }

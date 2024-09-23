@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\QuotesResource;
 use App\Models\Quote;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 
 class QuoteController extends Controller
@@ -37,11 +38,11 @@ class QuoteController extends Controller
      */
     public function show(string $id)
     {
-        $quote = Quote::with('users', 'author')->find($id);
+        $quote = Quote::find($id);
         if ($quote) {
             return response(new QuotesResource($quote));
         } else {
-            return response('There is no hotel with such id', 404);
+            return response('There is no quote with such id', 404);
         }
     }
 
@@ -77,5 +78,25 @@ class QuoteController extends Controller
             return response('No such kind of quote');
         }
 
+    }
+    public function like($id)
+    {
+        $user = auth()->user();
+        $quote = Quote::find($id);
+        if ($user->likedQuotes()->where('quote_id', $id)->exists()) {
+            $user->likedQuotes()->detach($id);
+            $quote->decrement('likes');
+            return response()->json([
+                'message' => 'Unliked successfully',
+                'likes' => $quote->likes
+            ]);
+        } else {
+            $user->likedQuotes()->attach($id);
+            $quote->increment('likes');
+            return response()->json([
+                'message' => 'Liked successfully',
+                'likes' => $quote->likes
+            ]);
+        }
     }
 }

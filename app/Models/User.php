@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Althinect\FilamentSpatieRolesPermissions\Concerns\HasSuperAdmin;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -24,20 +25,42 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'remember_token',
     ];
 
-    public function books()
+    public function books(): BelongsToMany
     {
-        return $this->belongsToMany(Book::class);
+        return $this->belongsToMany(Book::class,'user_books')
+            ->withPivot('status');
     }
 
-    public function reviews()
+    public function reviews(): HasMany
     {
         return $this->hasMany(Rating::class);
     }
 
-    public function likedquotes()
+    public function likedQuotes(): BelongsToMany
     {
         return $this->belongsToMany(Quote::class, 'user_quotes');
     }
+    public function likedGenres(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'category_user');
+    }
+    public function following(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id');
+    }
+    public function followers():BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'following_id', 'follower_id');
+    }
+    public function followingAuthors():BelongsToMany
+    {
+        return $this->belongsToMany(Author::class, 'author_follows', 'user_id', 'author_id');
+    }
+    public function likedRatings():BelongsToMany
+    {
+        return $this->belongsToMany(Rating::class, 'likes');
+    }
+
 
     public function getJWTIdentifier()
     {
@@ -49,7 +72,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      *
      * @return array
      */
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [];
     }

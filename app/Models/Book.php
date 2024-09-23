@@ -7,17 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 
 class Book extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $guarded = [];
     protected $casts = [
         'images' => 'array',
     ];
 
-    public function users()
+    public function users():BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -37,8 +38,13 @@ class Book extends Model
         return $this->hasMany(Rating::class, 'book_id');
     }
 
-    public function images()
+    public function usersWhoFinishedReading($status)
     {
-        return $this->hasMany(BookImage::class);
+        return $this->belongsToMany(User::class, 'user_books')
+            ->wherePivot('status', $status);
     }
+//    public function images():
+//    {
+//        return $this->hasMany(BookImage::class);
+//    }
 }

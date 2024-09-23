@@ -69,7 +69,7 @@
         </div>
     </div>
 
-    <p class="signup-link">New User? <a href="{{ route('register') }}">Sign Up</a></p>
+    <p class="signup-link">New User? <a href="{{ route('register-user') }}">Sign Up</a></p>
 </main>
 </body>
 </html>

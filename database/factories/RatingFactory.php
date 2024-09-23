@@ -19,7 +19,7 @@ class RatingFactory extends Factory
             'book_id' => Book::inRandomOrder()->first()->id,
             'rating' =>  $this->faker->numberBetween(1,10),
             'comment' =>  $this->faker->realText(),
-            'created_at' => $this->faker->dateTimeBetween('-1 month',now())
+            'created_at' => $this->faker->dateTimeBetween('-1 year',now())
         ];
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('author_id')->constrained()->cascadeOnDelete();
             $table->text('quote');
+            $table->integer('likes')->default(0);
             $table->timestamps();
         });
 

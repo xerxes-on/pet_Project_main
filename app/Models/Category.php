@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends Model
 {
@@ -11,12 +12,12 @@ class Category extends Model
 
     protected $guarded = [];
 
-    public function books()
+    public function books():BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'books_categories');
     }
 
-    public function quotes()
+    public function quotes():BelongsToMany
     {
         return $this->belongsToMany(Quote::class, 'category_quote');
     }
